@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "330111697356",
+    "project_id": "shopit-c62a5",
+    "storage_bucket": "shopit-c62a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330111697356:android:aa1d0e9b45d1111883dd69",
+        "android_client_info": {
+          "package_name": "com.ariehb_miriams.shopit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330111697356-02s2ak8s5ttq48e8jhdee9gl0q43clil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdEbNqrwUFL0WGllJM6g_i-Hd49GHbADk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330111697356-02s2ak8s5ttq48e8jhdee9gl0q43clil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
