@@ -27,7 +27,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     splashLoop();
                 } else {
                     // Start your main activity after the splash loop completes
-                    Intent intent = new Intent(SplashScreenActivity.this, HomeScreenActivity.class);
+                    Intent intent = new Intent(SplashScreenActivity.this, SignInActivity.class);
                     startActivity(intent);
                     finish();
                 }
