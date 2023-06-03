@@ -31,11 +31,11 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         Button signUpBtn = findViewById(R.id.signupBtn);
-        EditText firstName = findViewById(R.id.firstName);
-        EditText lastName = findViewById(R.id.lastName);
+        EditText firstName = findViewById(R.id.firstNameInput);
+        EditText lastName = findViewById(R.id.lastNameInput);
         EditText phone = findViewById(R.id.phoneInput);
-        EditText newPass = findViewById(R.id.newPassword);
-        EditText conPass = findViewById(R.id.conPassword);
+        EditText newPass = findViewById(R.id.newPasswordInput);
+        EditText conPass = findViewById(R.id.conPasswordInput);
 
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -49,9 +49,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }
                 else {
                     Map<String, Object> user = new HashMap<>();
-                    user.put("first name", firstName.getText().toString());
-                    user.put("last name", lastName.getText().toString());
-                    user.put("phone number", phone.getText().toString());
+                    user.put("first", firstName.getText().toString());
+                    user.put("last", lastName.getText().toString());
+                    user.put("phone_Number", phone.getText().toString());
                     user.put("password", conPass.getText().toString());
 
                     // Add a new document with a generated ID
@@ -71,45 +71,10 @@ public class SignUpActivity extends AppCompatActivity {
                             });
                     Toast.makeText(SignUpActivity.this, "Success!", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(SignUpActivity.this, HomeScreenActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
 
-                //                if ((conPass.getText().toString()).equals(newPass.getText().toString()) && (!newPass.getText().toString().equals(" ")) ) {
-//                    Map<String, Object> user = new HashMap<>();
-//                    user.put("first name", firstName.getText().toString());
-//                    user.put("last name", lastName.getText().toString());
-//                    user.put("phone number", phone.getText().toString());
-//                    user.put("password", conPass.getText().toString());
-//
-//                    // Add a new document with a generated ID
-//                    db.collection("users")
-//                            .add(user)
-//                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                                @Override
-//                                public void onSuccess(DocumentReference documentReference) {
-//                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-//                                }
-//                            })
-//                            .addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Log.w(TAG, "Error adding document", e);
-//                                }
-//                            });
-//                    Toast.makeText(SignUpActivity.this, "Success!", Toast.LENGTH_LONG).show();
-//
-//                    Intent intent = new Intent(SignUpActivity.this, HomeScreenActivity.class);
-//                    startActivity(intent);
-//                }
-//
-//                else if ((!firstName.getText().toString().equals(" ")) || (!lastName.getText().toString().equals(" ")) || (!phone.getText().toString().equals(" ")) || (!newPass.getText().toString().equals(" ")) || (!conPass.getText().toString().equals(" ")) ) {
-//                    Toast.makeText(SignUpActivity.this, "Missing Info", Toast.LENGTH_LONG).show();
-//
-//                }
-//                else {
-//                    Toast.makeText(SignUpActivity.this, "Error", Toast.LENGTH_LONG).show();
-//                }
             }
         });
 
