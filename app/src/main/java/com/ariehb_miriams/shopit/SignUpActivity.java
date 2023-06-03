@@ -48,9 +48,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }
                 else {
                     Map<String, Object> user = new HashMap<>();
-                    user.put("first name", firstName.getText().toString());
-                    user.put("last name", lastName.getText().toString());
-                    user.put("phone number", phone.getText().toString());
+                    user.put("first", firstName.getText().toString());
+                    user.put("last", lastName.getText().toString());
+                    user.put("phone", phone.getText().toString());
                     user.put("password", conPass.getText().toString());
 
                     // Add a new document with a generated ID
