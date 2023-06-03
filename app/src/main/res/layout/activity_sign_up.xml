@@ -36,7 +36,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.419" />
+        app:layout_constraintVertical_bias="0.308" />
 
 
     <EditText
@@ -52,7 +52,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.308" />
+        app:layout_constraintVertical_bias="0.419" />
 
     
     <EditText
@@ -102,10 +102,6 @@
         app:layout_constraintVertical_bias="0.742" />
 
 
-
-
-
-
     <Button
         android:id="@+id/signupBtn"
         android:layout_width="137dp"
@@ -116,7 +112,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.867" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

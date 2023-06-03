@@ -28,7 +28,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         getSupportActionBar().hide();
 
-        TextView linkText = findViewById(R.id.textView9);
+        TextView linkText = findViewById(R.id.textLink);
 
 
         linkText.setOnClickListener(new View.OnClickListener() {

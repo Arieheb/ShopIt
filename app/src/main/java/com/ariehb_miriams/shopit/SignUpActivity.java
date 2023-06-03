@@ -42,9 +42,9 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!conPass.getText().toString().equals(newPass.getText().toString())) { //if passwords are not the same
-                    Toast.makeText(SignUpActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this, "Passwords Not Matching", Toast.LENGTH_LONG).show();
                 }
-                else if ((!firstName.getText().toString().equals(" ")) || (!lastName.getText().toString().equals(" ")) || (!phone.getText().toString().equals(" ")) || (!newPass.getText().toString().equals(" ")) || (!conPass.getText().toString().equals(" ")) ) {
+                else if ((firstName.length() == 0) || (lastName.length() == 0) || (phone.length() == 0) || (newPass.length() == 0) || (conPass.length() == 0)) {
                     Toast.makeText(SignUpActivity.this, "Missing Info", Toast.LENGTH_LONG).show();
                 }
                 else {
