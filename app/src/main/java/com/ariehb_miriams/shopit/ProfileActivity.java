@@ -3,10 +3,6 @@ package com.ariehb_miriams.shopit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
-
-import android.os.Bundle;
 
 public class ProfileActivity extends AppCompatActivity {
 

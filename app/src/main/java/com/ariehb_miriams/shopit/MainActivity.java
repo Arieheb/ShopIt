@@ -1,8 +1,8 @@
 package com.ariehb_miriams.shopit;
 
-import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
+import static java.lang.System.exit;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,20 +10,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+//import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,13 +36,10 @@ public class MainActivity extends AppCompatActivity {
         MenuItem settingsMenu = menu.add("Settings");
         MenuItem exitMenu = menu.add("Exit");
 
-        settingsMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
-                return false;
-            }
+        settingsMenu.setOnMenuItemClickListener(menuItem -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+            return false;
         });
 
         aboutMenu.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -117,4 +108,29 @@ public class MainActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+
+    //// defining exit if back button pressed on main screen ////
+    @Override
+    public void onBackPressed() {
+        // Display an exit alert
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to exit the app?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Exit the app
+                finishAffinity();
+
+            }
+        });
+        builder.setNegativeButton("No", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+
+
 }

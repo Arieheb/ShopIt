@@ -2,40 +2,27 @@ package com.ariehb_miriams.shopit;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.BreakIterator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference users = db.collection("users");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +45,7 @@ public class SignInActivity extends AppCompatActivity {
                             Log.e(TAG, "Error getting documents: ", error);
                             return;
                         }
+                        boolean exists = false;
 
                         for (QueryDocumentSnapshot document : value) {
                             String passVal = document.getString("password");
@@ -65,17 +53,19 @@ public class SignInActivity extends AppCompatActivity {
                             String phoneInp = phoneInput.getText().toString();
                             String passInput = passwordInput.getText().toString();
 
-                            if ((passVal.equals(passInput)) && phoneVal.equals(phoneInp) ) {
-                                Toast.makeText(SignInActivity.this, "Success!", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }
-                            else {
-                                Toast.makeText(SignInActivity.this, "Login Error", Toast.LENGTH_LONG).show();
-
+                            if (phoneInp.equals(phoneVal) && passInput.equals(passVal)) {
+                                exists = true;
                             }
                         }
+                        if (exists) {
+                            Toast.makeText(SignInActivity.this, "Success!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                startActivity(intent);
+                        }
+                        else {
+                            Toast.makeText(SignInActivity.this, "Error!", Toast.LENGTH_LONG).show();
 
+                        }
                     }
                 });
 
