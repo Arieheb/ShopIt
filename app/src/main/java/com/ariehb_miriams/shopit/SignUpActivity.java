@@ -29,28 +29,29 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         getSupportActionBar().hide();
 
+
         Button signUpBtn = findViewById(R.id.signupBtn);
-        EditText firstName = findViewById(R.id.firstName);
-        EditText lastName = findViewById(R.id.lastName);
+        EditText firstName = findViewById(R.id.firstNameInput);
+        EditText lastName = findViewById(R.id.lastNameInput);
         EditText phone = findViewById(R.id.phoneInput);
-        EditText newPass = findViewById(R.id.newPassword);
-        EditText conPass = findViewById(R.id.conPassword);
+        EditText newPass = findViewById(R.id.newPasswordInput);
+        EditText conPass = findViewById(R.id.conPasswordInput);
 
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!conPass.getText().toString().equals(newPass.getText().toString())) { //if passwords are not the same
-                    Toast.makeText(SignUpActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this, "Passwords Not Matching", Toast.LENGTH_LONG).show();
                 }
-                else if ((!firstName.getText().toString().equals(" ")) || (!lastName.getText().toString().equals(" ")) || (!phone.getText().toString().equals(" ")) || (!newPass.getText().toString().equals(" ")) || (!conPass.getText().toString().equals(" ")) ) {
+                else if ((firstName.length() == 0) || (lastName.length() == 0) || (phone.length() == 0) || (newPass.length() == 0) || (conPass.length() == 0)) {
                     Toast.makeText(SignUpActivity.this, "Missing Info", Toast.LENGTH_LONG).show();
                 }
                 else {
                     Map<String, Object> user = new HashMap<>();
-                    user.put("first name", firstName.getText().toString());
-                    user.put("last name", lastName.getText().toString());
-                    user.put("phone number", phone.getText().toString());
+                    user.put("first", firstName.getText().toString());
+                    user.put("last", lastName.getText().toString());
+                    user.put("phone_Number", phone.getText().toString());
                     user.put("password", conPass.getText().toString());
 
                     // Add a new document with a generated ID
@@ -70,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
                             });
                     Toast.makeText(SignUpActivity.this, "Success!", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(SignUpActivity.this, HomeScreenActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
 
