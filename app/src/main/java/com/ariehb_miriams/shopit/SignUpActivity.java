@@ -69,10 +69,11 @@ public class SignUpActivity extends AppCompatActivity {
                                     Log.w(TAG, "Error adding document", e);
                                 }
                             });
-                    Toast.makeText(SignUpActivity.this, "Success!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this, "Success!\n"+ "Login Required", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                     startActivity(intent);
+                    finish();
                 }
 
             }

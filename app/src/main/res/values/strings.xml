@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">ShopIt</string>
+
+    <string-array name="shopping_list">
+        <item>milk</item>
+        <item>eggs</item>
+        <item>bread</item>
+        <item>coke</item>
+        <item>chocolate</item>
+        <item>snacks</item>
+        <item>water</item>
+
+    </string-array>
+
+    <string-array name="shopping_list1">
+        <item>milk</item>
+        <item>eggs</item>
+        <item>bread</item>
+        <item>coke</item>
+        <item>chocolate</item>
+        <item>snacks</item>
+        <item>water</item>
+
+    </string-array>
+
+    <string-array name="shopping_list2">
+        <item>milk</item>
+        <item>eggs</item>
+        <item>bread</item>
+        <item>coke</item>
+        <item>chocolate</item>
+        <item>snacks</item>
+        <item>water</item>
+
+    </string-array>
 </resources>
