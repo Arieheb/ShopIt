@@ -5,6 +5,7 @@ import static java.lang.System.exit;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,19 +13,67 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-//import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
-public class MainActivity extends AppCompatActivity {
-//    FirebaseFirestore db = FirebaseFirestore.getInstance();
+public class MainActivity extends AppCompatActivity implements MultipuleChoiceDialogFragment.onMultiChoiceListener {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String userID, userName;
+    TextView mylist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        userID = getIntent().getStringExtra("userId");
+        userName = getIntent().getStringExtra("userFirstName");
+        TextView title = findViewById(R.id.mainHead);
+        title.setText("Hello " + userName);
 
 
+        mylist = findViewById(R.id.mylist);
+
+        Button btnmylist = findViewById(R.id.btnmylist);
+        Button btnmylist1 = findViewById(R.id.btnmylist1);
+        Button btnmylist2 = findViewById(R.id.btnmylist2);
+        btnmylist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
+                multiChoiceDialog.setCancelable(false);
+                multiChoiceDialog.show(getSupportFragmentManager(), "multiChoice Dialog");
+
+            }
+        });
+
+        btnmylist1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
+                multiChoiceDialog.setCancelable(false);
+                multiChoiceDialog.show(getSupportFragmentManager(), "multiChoice Dialog");
+            }
+        });
+
+        btnmylist2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
+                multiChoiceDialog.setCancelable(false);
+                multiChoiceDialog.show(getSupportFragmentManager(), "multiChoice Dialog");
+            }
+        });
     }
+
+
+
 
     //// 3 dot menu section ////
     @Override
@@ -96,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which)
             {
                 finish();   // destroy this activity
+
             }
         });
         dialog.setNegativeButton("NO", new DialogInterface.OnClickListener()
@@ -120,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Exit the app
-                finishAffinity();
+                finish();
 
             }
         });
@@ -131,6 +181,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onPositiveButtonClicked(String[] list, ArrayList<String> selectedItemList) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Selected Choices = ");
+        for (String str:selectedItemList){
+            stringBuilder.append(str + " ");
+        }
+        mylist.setText(stringBuilder);
+    }
 
+    @Override
+    public void onNegativeButtonClicked() {
+        mylist.setText("Dialog canceled");
 
+    }
 }

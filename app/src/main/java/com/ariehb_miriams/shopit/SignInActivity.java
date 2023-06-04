@@ -23,6 +23,7 @@ import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    boolean exists = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
                 db.collection("users").addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -45,26 +47,38 @@ public class SignInActivity extends AppCompatActivity {
                             Log.e(TAG, "Error getting documents: ", error);
                             return;
                         }
-                        boolean exists = false;
+                        String phoneInp = phoneInput.getText().toString();
+                        String passInput = passwordInput.getText().toString();
 
-                        for (QueryDocumentSnapshot document : value) {
-                            String passVal = document.getString("password");
-                            String phoneVal = document.getString("phone_Number");
-                            String phoneInp = phoneInput.getText().toString();
-                            String passInput = passwordInput.getText().toString();
-
-                            if (phoneInp.equals(phoneVal) && passInput.equals(passVal)) {
-                                exists = true;
-                            }
+                        if (phoneInp.equals("")) {
+                            Toast.makeText(SignInActivity.this, "Missing info", Toast.LENGTH_SHORT).show();
                         }
-                        if (exists) {
-                            Toast.makeText(SignInActivity.this, "Success!", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                startActivity(intent);
+                        else if (passInput.equals("")) {
+                            Toast.makeText(SignInActivity.this, "Missing info", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(SignInActivity.this, "Error!", Toast.LENGTH_LONG).show();
+                            for (QueryDocumentSnapshot document : value) {
+                                String passVal = document.getString("password");
+                                String phoneVal = document.getString("phone_Number");
 
+                                if (phoneInp.equals(phoneVal)) {
+                                    if (passInput.equals(passVal)) {
+                                        exists =true;
+                                        Toast.makeText(SignInActivity.this, "Success Login!", Toast.LENGTH_SHORT).show();
+                                        String userId = document.getId() ;
+                                        String userFirstName = document.getString("first");
+                                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                        intent.putExtra("userId", userId);
+                                        intent.putExtra("userFirstName",userFirstName);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+
+                            }
+                            if (!exists) {
+                                Toast.makeText(SignInActivity.this, "Phone/Password Incorrect", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
