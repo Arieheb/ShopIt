@@ -19,39 +19,39 @@
             tools:layout_editor_absoluteY="9dp">
 
 
+            <!--                android:layout_width="190dp"-->
+            <!--                android:layout_height="254dp"-->
+            <!--                android:layout_marginTop="48dp"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintHorizontal_bias="0.444"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+
+
             <Button
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="300dp"
                 android:text="edit picture"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.441"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.455" />
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="190dp"
-                android:layout_height="254dp"
-                android:layout_marginTop="48dp"
+                android:layout_width="288dp"
+                android:layout_height="300dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.444"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat = "@drawable/profile_icon" />
-
-            <Switch
-                android:id="@+id/switch1"
-                android:layout_width="315dp"
-                android:layout_height="55dp"
-                android:layout_marginTop="540dp"
-                android:text="Allow access to contacts"
-                android:textSize="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.27"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintVertical_bias="0.069"
+                tools:srcCompat="@drawable/profile_icon" />
 
             <EditText
                 android:id="@+id/editTextTextPersonName"
@@ -62,10 +62,23 @@
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.47"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.582" />
+                app:layout_constraintVertical_bias="0.552" />
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="315dp"
+                android:layout_height="55dp"
+                android:text="Allow access to contacts"
+                android:textSize="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.772" />
 
             <EditText
                 android:id="@+id/editTextTextPassword2"
@@ -76,10 +89,34 @@
                 android:inputType="textPassword"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.456"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.692" />
+                app:layout_constraintVertical_bias="0.663" />
+
+            <Button
+                android:id="@+id/SaveBtn"
+                android:layout_width="110dp"
+                android:layout_height="49dp"
+                android:text="Save"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.264"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.931" />
+
+            <Button
+                android:id="@+id/signOutBtn"
+                android:layout_width="110dp"
+                android:layout_height="49dp"
+                android:text="Sign Out"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.735"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.931" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
