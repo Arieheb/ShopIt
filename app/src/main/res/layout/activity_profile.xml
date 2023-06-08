@@ -19,14 +19,19 @@
             tools:layout_editor_absoluteY="9dp">
 
 
-            <!--                android:layout_width="190dp"-->
-            <!--                android:layout_height="254dp"-->
-            <!--                android:layout_marginTop="48dp"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintHorizontal_bias="0.444"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent"-->
-
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="297dp"
+                android:layout_height="267dp"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:src="@drawable/profile_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/button"
@@ -37,62 +42,75 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.455" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="288dp"
-                android:layout_height="300dp"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.069"
-                tools:srcCompat="@drawable/profile_icon" />
+                app:layout_constraintVertical_bias="0.398" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
-                android:layout_width="243dp"
-                android:layout_height="58dp"
+                android:id="@+id/firstNameEdit"
+                android:layout_width="246dp"
+                android:layout_height="48dp"
                 android:ems="10"
-                android:hint="User Name"
+                android:hint="first name hint"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.552" />
+                app:layout_constraintVertical_bias="0.478" />
+
+            <EditText
+                android:id="@+id/lastNameEdit"
+                android:layout_width="246dp"
+                android:layout_height="48dp"
+                android:ems="10"
+                android:hint="last name hint"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.564" />
+
+            <EditText
+                android:id="@+id/phoneEdit"
+                android:layout_width="246dp"
+                android:layout_height="48dp"
+                android:ems="10"
+                android:hint="phone number hint"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.653" />
+
+            <EditText
+                android:id="@+id/passwordEdit"
+                android:layout_width="246dp"
+                android:layout_height="48dp"
+                android:ems="10"
+                android:hint="password hint"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.738" />
 
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/contactTog"
                 android:layout_width="315dp"
                 android:layout_height="55dp"
                 android:text="Allow access to contacts"
                 android:textSize="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.772" />
-
-            <EditText
-                android:id="@+id/editTextTextPassword2"
-                android:layout_width="238dp"
-                android:layout_height="57dp"
-                android:ems="10"
-                android:hint="Password"
-                android:inputType="textPassword"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.663" />
+                app:layout_constraintVertical_bias="0.837" />
 
             <Button
                 android:id="@+id/SaveBtn"

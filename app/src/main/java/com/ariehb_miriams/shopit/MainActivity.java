@@ -30,19 +30,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity implements MultipuleChoiceDialogFragment.onMultiChoiceListener {
-//    FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    CollectionReference userCollection = db.collection("users");
-    private FirebaseFirestore db;
-    private CollectionReference userCollection;
-    String userID, userName;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference userCollection = db.collection("users");
+    String userID;
     TextView mylist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = FirebaseFirestore.getInstance();
-        userCollection = db.collection("users");
         userID = getIntent().getStringExtra("userId");
         getAndSaveDataSP(userID);
         SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
