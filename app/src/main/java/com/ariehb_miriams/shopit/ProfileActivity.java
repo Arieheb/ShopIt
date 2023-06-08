@@ -10,14 +10,42 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileActivity extends AppCompatActivity {
-
+//    FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    CollectionReference userCollection = db.collection("users");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        String firstName = sp.getString("first", "");
+        String lastName = sp.getString("last", "");
+        String phoneNumber = sp.getString("phone_number", "");
+        String password = sp.getString("password", "");
+
+        EditText firstNameHint = findViewById(R.id.firstNameEdit);
+        firstNameHint.setHint(firstName);
+        EditText lastNameHint = findViewById(R.id.lastNameEdit);
+        lastNameHint.setHint(lastName);
+        EditText phoneNumberHint = findViewById(R.id.phoneEdit);
+        phoneNumberHint.setHint(phoneNumber);
+        EditText passwordHint = findViewById(R.id.passwordEdit);
+        passwordHint.setHint(password);
+
+
+
+
+
+
+
+
+        //// Sign out section ////
         Button signOutButton = findViewById(R.id.signOutBtn);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
@@ -25,7 +53,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void exitAlertDialog()
     {
