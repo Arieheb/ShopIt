@@ -44,7 +44,6 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
-                            Log.e(TAG, "Error getting documents: ", error);
                             return;
                         }
                         String phoneInp = phoneInput.getText().toString();
