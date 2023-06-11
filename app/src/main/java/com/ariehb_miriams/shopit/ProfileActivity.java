@@ -1,16 +1,25 @@
 package com.ariehb_miriams.shopit;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,6 +27,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class ProfileActivity extends AppCompatActivity {
 //    FirebaseFirestore db = FirebaseFirestore.getInstance();
 //    CollectionReference userCollection = db.collection("users");
+    private static final int PERMISSION_CODE = 1000;
+    private static final int IMAGE_CAPTURE_CODE = 1001;
+
+    Button mCaptureBtn;
+    ImageView mImageView;
+
+    Uri image_Uri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +54,6 @@ public class ProfileActivity extends AppCompatActivity {
         EditText passwordHint = findViewById(R.id.passwordEdit);
         passwordHint.setHint(password);
 
-
-
-
-
-
-
-
         //// Sign out section ////
         Button signOutButton = findViewById(R.id.signOutBtn);
         signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +61,81 @@ public class ProfileActivity extends AppCompatActivity {
                 exitAlertDialog();
             }
         });
+
+        mImageView = findViewById(R.id.imageView);
+        mCaptureBtn = findViewById(R.id.button);
+
+        //button click
+        mCaptureBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if system os is >= marshmallow, request runtime permission
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if(checkSelfPermission(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED
+                            || checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED ){
+                        //permission not enabled, request it
+                        String [] permission = {android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        // show popup to request permissions
+                        requestPermissions(permission, PERMISSION_CODE);
+                    }
+
+                    else {
+                        //permission already granted
+                        openCamera();
+
+                    }
+                }
+                else {
+                    //system os is < marshmallow
+                    openCamera();
+                }
+            }
+        });
     }
+
+
+    //// Camera Section ////
+    private void openCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "new picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "from the camera");
+        image_Uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        // camera intent
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_Uri);
+        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE);
+    }
+
+    //handling permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // this method is called when user presses allow or deny from permission request popup
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission from popup grandet
+                    openCamera();
+                }
+                else{
+                    //permission from popup denied
+                    Toast.makeText(this, "permission denied...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //called when image was captured from camera
+        if(resultCode == RESULT_OK){
+            //set the image captured to our image view
+            mImageView.setImageURI(image_Uri);
+        }
+    }
+
+
 
     private void exitAlertDialog()
     {
