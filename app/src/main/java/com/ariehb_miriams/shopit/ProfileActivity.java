@@ -25,8 +25,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileActivity extends AppCompatActivity {
-//    FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    CollectionReference userCollection = db.collection("users");
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
 
@@ -151,7 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
             {
                 clearSharedPreferences();
                 navigateToSignIn();
-                ProfileActivity.super.finish();
+//                ProfileActivity.super.finish();
                 finish();   // destroy this activity
 
             }
