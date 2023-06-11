@@ -5,7 +5,9 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -23,6 +27,8 @@ import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference userCollection = db.collection("users");
+
     boolean exists = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +71,7 @@ public class SignInActivity extends AppCompatActivity {
                                         exists =true;
                                         Toast.makeText(SignInActivity.this, "Success Login!", Toast.LENGTH_SHORT).show();
                                         String userId = document.getId() ;
-                                        String userFirstName = document.getString("first");
-                                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                        intent.putExtra("userId", userId);
-                                        intent.putExtra("userFirstName",userFirstName);
-                                        startActivity(intent);
-                                        finish();
+                                        getAndSaveDataSP(userId);
                                     }
                                 }
 
@@ -101,5 +102,27 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void getAndSaveDataSP (String userId) {
+        userCollection.document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String firstName = documentSnapshot.getString("first");
+                String lastName = documentSnapshot.getString("last");
+                String phoneNumber = documentSnapshot.getString("phone_Number");
+                String password = documentSnapshot.getString("password");
+
+                SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("first", firstName);
+                editor.putString("last", lastName);
+                editor.putString("phone_number", phoneNumber);
+                editor.putString("password", password);
+                editor.commit();
+
+                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }

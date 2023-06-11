@@ -40,11 +40,9 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         userID = getIntent().getStringExtra("userId");
-        getAndSaveDataSP(userID);
         SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        String userFirstName = sp.getString("first","");
+        String userFirstName = sp.getString("first",null);
         TextView title = findViewById(R.id.mainHead);
-        Log.d(TAG, "onCreate: " + userFirstName);
         title.setText("Hello " + userFirstName);
 
 
@@ -98,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         settingsMenu.setOnMenuItemClickListener(menuItem -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
+            finish();
             return false;
         });
 
@@ -207,22 +206,4 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
     }
 
-    private void getAndSaveDataSP (String userId) {
-        userCollection.document(userId).get().addOnSuccessListener(documentSnapshot -> {
-           if (documentSnapshot.exists()) {
-               String firstName = documentSnapshot.getString("first");
-               String lastName = documentSnapshot.getString("last");
-               String phoneNumber = documentSnapshot.getString("phone_Number");
-               String password = documentSnapshot.getString("password");
-
-               SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-               SharedPreferences.Editor editor = sp.edit();
-               editor.putString("first", firstName);
-               editor.putString("last", lastName);
-               editor.putString("phone_number", phoneNumber);
-               editor.putString("password", password);
-               editor.commit();
-           }
-        });
-    }
 }
