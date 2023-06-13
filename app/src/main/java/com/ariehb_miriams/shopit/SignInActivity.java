@@ -123,7 +123,6 @@ public class SignInActivity extends AppCompatActivity {
                 editor.putBoolean("signedOut", false);
                 editor.putBoolean("contactPer", false);
                 editor.putBoolean("cameraPer", false);
-                editor.putString("profilePic", null);
                 editor.commit();
 
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);

@@ -70,6 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
         passwordField.setHint(passwordSp);
 
 
+        //// update personal information in firebase and sharedPrefrences /////
 
         Button savBtn = findViewById(R.id.SaveBtn);
 
@@ -123,6 +124,12 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+        //// profile picture management section ////
+
+
         mImageView = findViewById(R.id.imageView);
         mCaptureBtn = findViewById(R.id.button);
 
@@ -143,7 +150,6 @@ public class ProfileActivity extends AppCompatActivity {
                     else {
                         //permission already granted
                         openCamera();
-
                     }
                 }
                 else {
@@ -189,6 +195,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
         //called when image was captured from camera
         if(resultCode == RESULT_OK){
             //set the image captured to our image view
@@ -197,6 +205,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+
+
+    //// private methods ////
 
     private void exitAlertDialog()
     {
@@ -210,11 +221,9 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-
                 clearSharedPreferences();
                 navigateToSignIn();
                 finish();   // destroy this activity
-
             }
         });
         dialog.setNegativeButton("NO", new DialogInterface.OnClickListener()
