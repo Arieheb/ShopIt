@@ -25,14 +25,14 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                if (sp.getBoolean("signedIn", true)) {
+                if (sp.getBoolean("signedOut", true)) {
                     if (loopCounter < LOOP_COUNT) {
                         // Continue looping
                         loopCounter++;
                         splashLoop();
                     } else {
                         // Start your main activity after the splash loop completes
-                        Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                        Intent intent = new Intent(SplashScreenActivity.this, SignInActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -44,7 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                         splashLoop();
                     } else {
                         // Start your main activity after the splash loop completes
-                        Intent intent = new Intent(SplashScreenActivity.this, SignInActivity.class);
+                        Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     }

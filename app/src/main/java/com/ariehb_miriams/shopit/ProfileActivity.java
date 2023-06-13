@@ -210,9 +210,9 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+
                 clearSharedPreferences();
                 navigateToSignIn();
-//                ProfileActivity.super.finish();
                 finish();   // destroy this activity
 
             }

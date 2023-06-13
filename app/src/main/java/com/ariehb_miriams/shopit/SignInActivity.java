@@ -120,7 +120,7 @@ public class SignInActivity extends AppCompatActivity {
                 editor.putString("phone_number", phoneNumber);
                 editor.putString("password", password);
                 editor.putString("userId", userId);
-                editor.putBoolean("signedIn", false);
+                editor.putBoolean("signedOut", false);
                 editor.putBoolean("contactPer", false);
                 editor.putBoolean("cameraPer", false);
                 editor.putString("profilePic", null);
