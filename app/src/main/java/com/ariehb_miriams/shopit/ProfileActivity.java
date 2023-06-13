@@ -1,5 +1,7 @@
 package com.ariehb_miriams.shopit;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -15,16 +17,30 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference userCollection = db.collection("users");
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
 
@@ -38,19 +54,66 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        String firstName = sp.getString("first", "");
-        String lastName = sp.getString("last", "");
-        String phoneNumber = sp.getString("phone_number", "");
-        String password = sp.getString("password", "");
+        SharedPreferences.Editor editor = sp.edit();
+        String firstNameSp = sp.getString("first", "");
+        String lastNameSp = sp.getString("last", "");
+        String phoneNumberSp = sp.getString("phone_number", "");
+        String passwordSp = sp.getString("password", "");
 
-        EditText firstNameHint = findViewById(R.id.firstNameEdit);
-        firstNameHint.setHint(firstName);
-        EditText lastNameHint = findViewById(R.id.lastNameEdit);
-        lastNameHint.setHint(lastName);
-        EditText phoneNumberHint = findViewById(R.id.phoneEdit);
-        phoneNumberHint.setHint(phoneNumber);
-        EditText passwordHint = findViewById(R.id.passwordEdit);
-        passwordHint.setHint(password);
+        EditText firstNameField = findViewById(R.id.firstNameEdit);
+        EditText lastNameField = findViewById(R.id.lastNameEdit);
+        EditText phoneNumberField = findViewById(R.id.phoneEdit);
+        EditText passwordField = findViewById(R.id.passwordEdit);
+        firstNameField.setHint(firstNameSp);
+        lastNameField.setHint(lastNameSp);
+        phoneNumberField.setHint(phoneNumberSp);
+        passwordField.setHint(passwordSp);
+
+
+
+        Button savBtn = findViewById(R.id.SaveBtn);
+
+        savBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String firstNameChg = firstNameField.getText().toString();
+                String lastNameChg = lastNameField.getText().toString();
+                String phonenumChg = phoneNumberField.getText().toString();
+                String passwordChg = passwordField.getText().toString();
+
+
+                if (!firstNameChg.isEmpty()) {
+                    firstNameField.setText("");
+                    updateData(firstNameSp,firstNameChg,"first");
+                    editor.putString("first", firstNameChg);
+                    editor.apply();
+                    firstNameField.setHint(firstNameChg);
+                }
+                if (!lastNameChg.isEmpty()) {
+                    lastNameField.setText("");
+                    updateData(lastNameSp,lastNameChg,"last");
+                    editor.putString("last", lastNameChg);
+                    editor.apply();
+                    lastNameField.setHint(lastNameChg);
+                }
+                if (!phonenumChg.isEmpty()) {
+                    phoneNumberField.setText("");
+                    updateData(phoneNumberSp,phonenumChg,"phone_Number");
+                    editor.putString("phone_number", phonenumChg);
+                    editor.apply();
+                    phoneNumberField.setHint(phonenumChg);
+                }
+                if (!passwordChg.isEmpty()) {
+                    passwordField.setText("");
+                    updateData(passwordSp, passwordChg,"password");
+                    editor.putString("password", passwordChg);
+                    editor.apply();
+                    passwordField.setHint(passwordChg);
+                }
+            }
+        });
+
+
 
         //// Sign out section ////
         Button signOutButton = findViewById(R.id.signOutBtn);
@@ -173,9 +236,44 @@ public class ProfileActivity extends AppCompatActivity {
         finish();
     }
     private void navigateToSignIn() {
-        Intent intent = new Intent(ProfileActivity.this, SignInActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
+    private void updateData(String existingName, String newName, String updateField) {
+        Map<String, Object> userUpdate = new HashMap<>();
+        userUpdate.put(updateField, newName);
+        db.collection("users")
+                .whereEqualTo(updateField, existingName)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            String documentID = documentSnapshot.getId();
+                            db.collection("users")
+                                    .document(documentID)
+                                    .update (userUpdate)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Toast.makeText(ProfileActivity.this, "Info Saved", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(ProfileActivity.this, "error", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                            }
+                        else {
+                            Toast.makeText(ProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
 }

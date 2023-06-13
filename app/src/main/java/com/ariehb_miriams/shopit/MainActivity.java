@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         settingsMenu.setOnMenuItemClickListener(menuItem -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
-            finish();
+//            finish();
             return false;
         });
 
