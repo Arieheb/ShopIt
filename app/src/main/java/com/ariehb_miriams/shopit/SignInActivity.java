@@ -112,6 +112,7 @@ public class SignInActivity extends AppCompatActivity {
                 String password = documentSnapshot.getString("password");
 
 
+
                 SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("first", firstName);
@@ -119,6 +120,10 @@ public class SignInActivity extends AppCompatActivity {
                 editor.putString("phone_number", phoneNumber);
                 editor.putString("password", password);
                 editor.putString("userId", userId);
+                editor.putBoolean("signedIn", false);
+                editor.putBoolean("contactPer", false);
+                editor.putBoolean("cameraPer", false);
+                editor.putString("profilePic", null);
                 editor.commit();
 
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);
