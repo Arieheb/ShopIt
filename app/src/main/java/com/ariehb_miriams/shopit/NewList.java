@@ -133,6 +133,16 @@ public class NewList extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        // Clear the SharedPreferences
+        SharedPreferences.Editor editor = sp.edit();
+        editor.remove(currentList);
+        editor.apply();
+
+        // Clear the stack and navigate back to the previous activity
+        finish();
+    }
     private static void addItem(String text) {
         items.add(text);
         listView.setAdapter(adapter);
