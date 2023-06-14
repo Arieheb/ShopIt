@@ -30,14 +30,13 @@ public class NewList extends AppCompatActivity {
         input = findViewById(R.id.itemName);
         enter = findViewById(R.id.add);
 
-
-        items = new ArrayList<>();
-        items.add ("Apple");
-        items.add ("Milk");
-        items.add ("Flour");
-        items.add ("Sugar");
-        items.add ("Coffee");
-        items.add ("Pepper");
+//        items = new ArrayList<>();
+//        items.add ("Apple");
+//        items.add ("Milk");
+//        items.add ("Flour");
+//        items.add ("Sugar");
+//        items.add ("Coffee");
+//        items.add ("Pepper");
 
         adapter = new ListViewAdapter(getApplicationContext(), items);
         listView.setAdapter(adapter);
@@ -48,7 +47,6 @@ public class NewList extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 makeToast("Removed: " + items.get(i));
                 removeItem(i);
-//                Toast.makeText(NewList.this, "Removed: " + items.get(i), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
