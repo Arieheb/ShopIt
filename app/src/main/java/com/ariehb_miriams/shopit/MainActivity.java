@@ -48,6 +48,19 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
         mylist = findViewById(R.id.mylist);
 
+        Button listBtn = findViewById(R.id.newListBtn);
+        listBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NewList.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+
         Button btnmylist = findViewById(R.id.btnmylist);
         Button btnmylist1 = findViewById(R.id.btnmylist1);
         Button btnmylist2 = findViewById(R.id.btnmylist2);
@@ -79,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             }
         });
     }
+
+
+
+
 
 
 
