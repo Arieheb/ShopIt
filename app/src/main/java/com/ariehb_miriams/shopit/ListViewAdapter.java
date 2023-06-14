@@ -22,6 +22,7 @@ public class ListViewAdapter extends ArrayAdapter<String> {
     ArrayList<String> list;
     Context context;
 
+
     public ListViewAdapter (Context context, ArrayList<String> items) {
         super(context, R.layout.list_row, items);
         this.context = context;
@@ -47,12 +48,14 @@ public class ListViewAdapter extends ArrayAdapter<String> {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context.getApplicationContext(), "removed: " + list.get(position), Toast.LENGTH_SHORT).show();
-                    NewList.removeItem(position);
-                    Log.d(TAG, "position is: " + position);
+                    String item = list.get(position);
+                    NewList.removeItem(item);
                 }
             });
 
         }
         return convertView;
     }
+
+
 }
