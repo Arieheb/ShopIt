@@ -2,7 +2,9 @@ package com.ariehb_miriams.shopit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -21,16 +23,33 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (loopCounter < LOOP_COUNT) {
-                    // Continue looping
-                    loopCounter++;
-                    splashLoop();
-                } else {
-                    // Start your main activity after the splash loop completes
-                    Intent intent = new Intent(SplashScreenActivity.this, SignInActivity.class);
-                    startActivity(intent);
-                    finish();
+                SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                if (sp.getBoolean("signedOut", true)) {
+                    if (loopCounter < LOOP_COUNT) {
+                        // Continue looping
+                        loopCounter++;
+                        splashLoop();
+                    } else {
+                        // Start your main activity after the splash loop completes
+                        Intent intent = new Intent(SplashScreenActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
+                else {
+                    if (loopCounter < LOOP_COUNT) {
+                        // Continue looping
+                        loopCounter++;
+                        splashLoop();
+                    } else {
+                        // Start your main activity after the splash loop completes
+                        Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+
             }
         }, SPLASH_DURATION);
 

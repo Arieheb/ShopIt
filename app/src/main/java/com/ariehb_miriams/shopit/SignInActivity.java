@@ -111,12 +111,18 @@ public class SignInActivity extends AppCompatActivity {
                 String phoneNumber = documentSnapshot.getString("phone_Number");
                 String password = documentSnapshot.getString("password");
 
+
+
                 SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("first", firstName);
                 editor.putString("last", lastName);
                 editor.putString("phone_number", phoneNumber);
                 editor.putString("password", password);
+                editor.putString("userId", userId);
+                editor.putBoolean("signedOut", false);
+                editor.putBoolean("contactPer", false);
+                editor.putBoolean("cameraPer", false);
                 editor.commit();
 
                 Intent intent = new Intent(SignInActivity.this, MainActivity.class);

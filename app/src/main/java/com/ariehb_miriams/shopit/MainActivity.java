@@ -48,6 +48,19 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
         mylist = findViewById(R.id.mylist);
 
+        Button listBtn = findViewById(R.id.newListBtn);
+        listBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NewList.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+
         Button btnmylist = findViewById(R.id.btnmylist);
         Button btnmylist1 = findViewById(R.id.btnmylist1);
         Button btnmylist2 = findViewById(R.id.btnmylist2);
@@ -83,6 +96,10 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
 
 
+
+
+
+
     //// 3 dot menu section ////
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -96,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         settingsMenu.setOnMenuItemClickListener(menuItem -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
-            finish();
+//            finish();
             return false;
         });
 
