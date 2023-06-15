@@ -19,13 +19,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,19 +36,41 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity implements MultipuleChoiceDialogFragment.onMultiChoiceListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userCollection = db.collection("users");
+    SharedPreferences sp;
     BroadcastReceiver broadcastReceiver = null;
     String userID;
     TextView mylist;
+    static ArrayList<String> items;
+
+    ListView listView;
+    CustomListAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        listView = findViewById(R.id.listView);
+        items = new ArrayList<>();
+        adapter = new CustomListAdapter(getApplicationContext(),items);
+        listView.setAdapter(adapter);
+
+
+        loadKeyNames(); // Call the method to load key names into the ListView
+
+
+
+
+
+
+
         userID = getIntent().getStringExtra("userId");
         SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         String userFirstName = sp.getString("first",null);
         TextView title = findViewById(R.id.mainHead);
         title.setText("Hello " + userFirstName);
+
 
 
         mylist = findViewById(R.id.mylist);
@@ -56,37 +81,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewList.class);
                 startActivity(intent);
-            }
-        });
-
-        Button btnmylist = findViewById(R.id.btnmylist);
-        Button btnmylist1 = findViewById(R.id.btnmylist1);
-        Button btnmylist2 = findViewById(R.id.btnmylist2);
-        btnmylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
-                multiChoiceDialog.setCancelable(false);
-                multiChoiceDialog.show(getSupportFragmentManager(), "multiChoice Dialog");
-
-            }
-        });
-
-        btnmylist1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
-                multiChoiceDialog.setCancelable(false);
-                multiChoiceDialog.show(getSupportFragmentManager(), "multiChoice Dialog");
-            }
-        });
-
-        btnmylist2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
-                multiChoiceDialog.setCancelable(false);
-                multiChoiceDialog.show(getSupportFragmentManager(), "multiChoice Dialog");
             }
         });
 
@@ -111,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         settingsMenu.setOnMenuItemClickListener(menuItem -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             startActivity(intent);
-//            finish();
             return false;
         });
 
@@ -203,8 +196,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-
     @Override
     public void onPositiveButtonClicked(String[] list, ArrayList<String> selectedItemList) {
 //        StringBuilder stringBuilder = new StringBuilder();
@@ -214,12 +205,13 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 //        }
 //        mylist.setText(stringBuilder);
     }
-
     @Override
     public void onNegativeButtonClicked() {
 //        mylist.setText("Dialog canceled");
 
     }
+
+
     public void internetStatus(){
         registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
@@ -227,6 +219,27 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     protected void onPause() {
         super.onPause();
         unregisterReceiver(broadcastReceiver);
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+//        startActivity(intent);
+//    }
+    private void loadKeyNames() {
+        Map<String, ?> allEntries = sp.getAll();
+
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            String key = entry.getKey();
+            if (key.startsWith("list_")) {
+                String listName = sp.getString(key, "");
+                items.add(listName);
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        listView.setAdapter(adapter);
     }
 
 }

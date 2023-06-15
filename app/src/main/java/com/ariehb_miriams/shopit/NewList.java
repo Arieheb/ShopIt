@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -116,7 +118,8 @@ public class NewList extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(getApplicationContext(), "List saved to Firebase", Toast.LENGTH_SHORT).show();
-                            }
+                                Intent intent = new Intent(NewList.this, MainActivity.class);
+                                startActivity(intent);                            }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
