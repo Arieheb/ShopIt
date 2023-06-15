@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         listView = findViewById(R.id.listView);
         items = new ArrayList<>();
         loadKeyNames(); // Call the method to load key names into the ListView
-
+        Log.d(TAG, "items is " + items);
         adapter = new CustomListAdapter(getApplicationContext(),items);
         listView.setAdapter(adapter);
 
@@ -75,36 +75,15 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
                 // Step 3: Create and display an AlertDialog
 
                 Toast.makeText(MainActivity.this, "Touched an item", Toast.LENGTH_SHORT).show();
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                builder.setTitle("Items List");
-//
-//                // Retrieve the list of items from SharedPreferences based on the clicked row position
-//                List<String> items = retrieveItemsFromSharedPreferences(position);
-//
-//                // Set the message of the AlertDialog with the list of items
-//                StringBuilder stringBuilder = new StringBuilder();
-//                for (String item : items) {
-//                    stringBuilder.append(item).append("\n");
-//                }
-//                builder.setMessage(stringBuilder.toString());
-//
-//                // Set the positive button (optional)
-//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // Handle positive button click (if needed)
-//                    }
-//                });
-//
-//                // Show the AlertDialog
-//                builder.show();
+                Log.d(TAG, "items are: " + items.get(position));
+
+                Log.d(TAG, "retrive items is: " + retrieveItemsFromSharedPreferences(items.get(position)));
+
                 DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
                 multiChoiceDialog.setCancelable(false);
                 multiChoiceDialog.show(getSupportFragmentManager(),"multiChoice Dialog");
             }
         });
-
-
 
 
 
@@ -262,8 +241,8 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     public void internetStatus(){
         registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
-   /* @Override
 
+    /* @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(broadcastReceiver);
@@ -277,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             String key = entry.getKey();
             if (key.startsWith("list_")) {
                 String listName = sp.getString(key, "");
-                Log.d(TAG, "loadKeyNames: " + key);
+//                Log.d(TAG, "loadKeyNames: " + key);
                 items.add(listName);
             }
         }
@@ -285,35 +264,16 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         listView.setAdapter(adapter);
     }
 
-    private List<String> retrieveItemsFromSharedPreferences(int position) {
+    private List<String> retrieveItemsFromSharedPreferences(String listName) {
         // Retrieve the SharedPreferences instance
-        SharedPreferences sharedPreferences = getSharedPreferences("YourSharedPrefsName", Context.MODE_PRIVATE);
-
-
+        SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         // Retrieve the StringSet based on the clicked row position
-        Set<String> itemSet = sharedPreferences.getStringSet("itemSetKey" + position, new HashSet<>());
-        Log.d(TAG, "item set is: " + itemSet);
+        Set<String> itemSet = sp.getStringSet(listName, new HashSet<>());
+//        Log.d(TAG, "item set is: " + itemSet);
         // Convert the Set to a List for easier manipulation
         List<String> itemList = new ArrayList<>(itemSet);
-        Log.d(TAG, "itemList is " + itemList);
+//        Log.d(TAG, "itemList is " + itemList);
 
         return itemList;
     }
-    // Helper method to retrieve the list of items from SharedPreferences
-//    private List<String> retrieveItemsFromSharedPreferences(long id) {
-//        sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-//        String listName = sp.getString("list_"+id, null);
-//        Log.d(TAG, "list name is: " + listName);
-//        if (listName!=null) {
-//            Set<String> itemSet = sp.getStringSet(listName, new HashSet<>());
-//            Log.d(TAG, "retrieveItemsFromSharedPreferences: " + itemSet);
-//            List<String> itemList = new ArrayList<>(itemSet);
-//            Log.d(TAG, "retrieveItemsFromSharedPreferences: " + itemList);
-//            return itemList;
-//
-//        }
-//        return new ArrayList<>();
-//
-//
-
 }
