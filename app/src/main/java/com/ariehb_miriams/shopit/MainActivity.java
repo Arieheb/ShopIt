@@ -3,11 +3,12 @@ package com.ariehb_miriams.shopit;
 
 import static android.content.ContentValues.TAG;
 import static java.lang.System.exit;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity implements MultipuleChoiceDialogFragment.onMultiChoiceListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userCollection = db.collection("users");
+    BroadcastReceiver broadcastReceiver = null;
     String userID;
     TextView mylist;
 
@@ -56,10 +58,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
                 startActivity(intent);
             }
         });
-
-
-
-
 
         Button btnmylist = findViewById(R.id.btnmylist);
         Button btnmylist1 = findViewById(R.id.btnmylist1);
@@ -91,12 +89,12 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
                 multiChoiceDialog.show(getSupportFragmentManager(), "multiChoice Dialog");
             }
         });
+
+        ///_ INTERNET CONNECTION___
+
+        broadcastReceiver = new internetReceiver();
+        internetStatus();
     }
-
-
-
-
-
 
 
 
@@ -221,6 +219,14 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     public void onNegativeButtonClicked() {
 //        mylist.setText("Dialog canceled");
 
+    }
+    public void internetStatus(){
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
 }
