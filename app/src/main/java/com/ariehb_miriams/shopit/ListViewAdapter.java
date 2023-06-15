@@ -21,8 +21,6 @@ import java.util.ArrayList;
 public class ListViewAdapter extends ArrayAdapter<String> {
     ArrayList<String> list;
     Context context;
-
-
     public ListViewAdapter (Context context, ArrayList<String> items) {
         super(context, R.layout.list_row, items);
         this.context = context;
