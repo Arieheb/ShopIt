@@ -8,10 +8,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity implements MultipuleChoiceDialogFragment.onMultiChoiceListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userCollection = db.collection("users");
+    BroadcastReceiver broadcastReceiver = null;
     String userID;
     TextView mylist;
 
@@ -45,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         TextView title = findViewById(R.id.mainHead);
         title.setText("Hello " + userFirstName);
 
-
         mylist = findViewById(R.id.mylist);
 
         Button listBtn = findViewById(R.id.newListBtn);
@@ -56,10 +59,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
                 startActivity(intent);
             }
         });
-
-
-
-
 
         Button btnmylist = findViewById(R.id.btnmylist);
         Button btnmylist1 = findViewById(R.id.btnmylist1);
@@ -91,13 +90,12 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
                 multiChoiceDialog.show(getSupportFragmentManager(), "multiChoice Dialog");
             }
         });
+
+        ///___ INTERNET CONNECTION___
+
+        broadcastReceiver = new InternetReciver();
+        internetStatus();
     }
-
-
-
-
-
-
 
 
     //// 3 dot menu section ////
@@ -137,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
         return true;
     }
-
 
     private void aboutAlertDialog()
     {
@@ -185,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         dialog.show();
     }
 
-
     //// defining exit if back button pressed on main screen ////
     @Override
     public void onBackPressed() {
@@ -206,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         dialog.show();
     }
 
-
     @Override
     public void onPositiveButtonClicked(String[] list, ArrayList<String> selectedItemList) {
 //        StringBuilder stringBuilder = new StringBuilder();
@@ -223,4 +218,13 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
     }
 
+    public void internetStatus(){
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
 }
