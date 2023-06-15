@@ -12,34 +12,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomListAdapter extends ArrayAdapter<String> {
-    private Context context;
-    private List<String> listNames;
+    List<String> list;
+    Context context;
 
-    public CustomListAdapter(Context context, ArrayList<String> listNames) {
-        super(context, R.layout.list_item, listNames);
+    public CustomListAdapter(Context context, ArrayList<String> items) {
+        super(context, R.layout.activity_list_item, items);
         this.context = context;
-        this.listNames = listNames;
+        list = items;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_item, null);
+        if (convertView == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            convertView = layoutInflater.inflate(R.layout.activity_list_item, null);
         }
 
+        TextView number = convertView.findViewById(R.id.number);
+        number.setText(position + 1 + ".");
+
+
         TextView textListName = convertView.findViewById(R.id.textViewListName);
+        textListName.setText(list.get(position));
 
-
-        String listName = listNames.get(position);
-        textListName.setText(listName);
 
         ImageView checkIcon = convertView.findViewById(R.id.imageViewCheck);
         ImageView removeIcn = convertView.findViewById(R.id.remove);
@@ -50,6 +50,15 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 
             }
         });
+
+        removeIcn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
 
 
         return convertView;

@@ -34,6 +34,9 @@ import java.util.Set;
 
 public class NewList extends AppCompatActivity {
 
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+    private Button buttonLoadContacts;
+    private List<String> contactList;
     static ListView listView;
     static ArrayList<String> items;
     static ListViewAdapter adapter;
@@ -69,6 +72,24 @@ public class NewList extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
+        //// Contact Access ////
+
+        buttonLoadContacts = findViewById(R.id.collabAdd);
+        contactList = new ArrayList<>();
+
+        buttonLoadContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                requestContactPermissionAndLoadContacts();
+            }
+        });
+
+
+
+
+
+
+
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +109,6 @@ public class NewList extends AppCompatActivity {
                         itemSet = new HashSet<>(itemSet);
                     }
                     itemSet.add(text);
-                    Log.d(TAG, "item set is: " + itemSet);
                     editor.putStringSet(currentList,itemSet);
                     editor.apply();
                     addItem(text);
@@ -119,7 +139,9 @@ public class NewList extends AppCompatActivity {
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(getApplicationContext(), "List saved to Firebase", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(NewList.this, MainActivity.class);
-                                startActivity(intent);                            }
+                                startActivity(intent);
+                                finish();
+                            }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -131,9 +153,6 @@ public class NewList extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
     @Override
@@ -142,9 +161,11 @@ public class NewList extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(currentList);
         editor.apply();
-
-        // Clear the stack and navigate back to the previous activity
+        Intent intent = new Intent(NewList.this, MainActivity.class);
+        startActivity(intent);
         finish();
+        // Clear the stack and navigate back to the previous activity
+
     }
     private static void addItem(String text) {
         items.add(text);

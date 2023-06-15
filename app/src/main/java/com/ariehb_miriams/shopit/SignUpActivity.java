@@ -42,10 +42,10 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!conPass.getText().toString().equals(newPass.getText().toString())) { //if passwords are not the same
-                    Toast.makeText(SignUpActivity.this, "Passwords Not Matching", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this, "Passwords Not Matching", Toast.LENGTH_SHORT).show();
                 }
                 else if ((firstName.length() == 0) || (lastName.length() == 0) || (phone.length() == 0) || (newPass.length() == 0) || (conPass.length() == 0)) {
-                    Toast.makeText(SignUpActivity.this, "Missing Info", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this, "Missing Info", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Map<String, Object> user = new HashMap<>();
@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     Log.w(TAG, "Error adding document", e);
                                 }
                             });
-                    Toast.makeText(SignUpActivity.this, "Success!\n"+ "Login Required", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this, "Success!\n"+ "Login Required", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                     startActivity(intent);

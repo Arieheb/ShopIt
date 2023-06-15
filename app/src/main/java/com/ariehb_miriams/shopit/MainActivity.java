@@ -19,16 +19,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -36,6 +41,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity implements MultipuleChoiceDialogFragment.onMultiChoiceListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userCollection = db.collection("users");
+    CollectionReference listCollection = db.collection("lists");
+
     SharedPreferences sp;
     BroadcastReceiver broadcastReceiver = null;
     String userID;
@@ -53,11 +60,49 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         listView = findViewById(R.id.listView);
         items = new ArrayList<>();
+        loadKeyNames(); // Call the method to load key names into the ListView
+
         adapter = new CustomListAdapter(getApplicationContext(),items);
         listView.setAdapter(adapter);
 
 
-        loadKeyNames(); // Call the method to load key names into the ListView
+
+        //// alert dialog for list ////
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Step 3: Create and display an AlertDialog
+
+                Toast.makeText(MainActivity.this, "Touched an item", Toast.LENGTH_SHORT).show();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                builder.setTitle("Items List");
+//
+//                // Retrieve the list of items from SharedPreferences based on the clicked row position
+//                List<String> items = retrieveItemsFromSharedPreferences(position);
+//
+//                // Set the message of the AlertDialog with the list of items
+//                StringBuilder stringBuilder = new StringBuilder();
+//                for (String item : items) {
+//                    stringBuilder.append(item).append("\n");
+//                }
+//                builder.setMessage(stringBuilder.toString());
+//
+//                // Set the positive button (optional)
+//                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // Handle positive button click (if needed)
+//                    }
+//                });
+//
+//                // Show the AlertDialog
+//                builder.show();
+                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
+                multiChoiceDialog.setCancelable(false);
+                multiChoiceDialog.show(getSupportFragmentManager(),"multiChoice Dialog");
+            }
+        });
 
 
 
@@ -81,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewList.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -89,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         broadcastReceiver = new internetReceiver();
         internetStatus();
     }
+
 
 
 
@@ -215,18 +262,14 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     public void internetStatus(){
         registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
-    @Override
+   /* @Override
+
     protected void onPause() {
         super.onPause();
         unregisterReceiver(broadcastReceiver);
-    }
+    }*/
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//        startActivity(intent);
-//    }
+
     private void loadKeyNames() {
         Map<String, ?> allEntries = sp.getAll();
 
@@ -234,12 +277,43 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             String key = entry.getKey();
             if (key.startsWith("list_")) {
                 String listName = sp.getString(key, "");
+                Log.d(TAG, "loadKeyNames: " + key);
                 items.add(listName);
             }
         }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.activity_list_item, items);
         listView.setAdapter(adapter);
     }
+
+    private List<String> retrieveItemsFromSharedPreferences(int position) {
+        // Retrieve the SharedPreferences instance
+        SharedPreferences sharedPreferences = getSharedPreferences("YourSharedPrefsName", Context.MODE_PRIVATE);
+
+
+        // Retrieve the StringSet based on the clicked row position
+        Set<String> itemSet = sharedPreferences.getStringSet("itemSetKey" + position, new HashSet<>());
+        Log.d(TAG, "item set is: " + itemSet);
+        // Convert the Set to a List for easier manipulation
+        List<String> itemList = new ArrayList<>(itemSet);
+        Log.d(TAG, "itemList is " + itemList);
+
+        return itemList;
+    }
+    // Helper method to retrieve the list of items from SharedPreferences
+//    private List<String> retrieveItemsFromSharedPreferences(long id) {
+//        sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+//        String listName = sp.getString("list_"+id, null);
+//        Log.d(TAG, "list name is: " + listName);
+//        if (listName!=null) {
+//            Set<String> itemSet = sp.getStringSet(listName, new HashSet<>());
+//            Log.d(TAG, "retrieveItemsFromSharedPreferences: " + itemSet);
+//            List<String> itemList = new ArrayList<>(itemSet);
+//            Log.d(TAG, "retrieveItemsFromSharedPreferences: " + itemList);
+//            return itemList;
+//
+//        }
+//        return new ArrayList<>();
+//
+//
 
 }
