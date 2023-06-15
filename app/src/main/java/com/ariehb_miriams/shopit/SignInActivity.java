@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,11 +24,17 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class SignInActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userCollection = db.collection("users");
+    CollectionReference userLists = db.collection("lists");
+
 
     boolean exists = false;
     @Override
@@ -54,6 +61,37 @@ public class SignInActivity extends AppCompatActivity {
                         }
                         String phoneInp = phoneInput.getText().toString();
                         String passInput = passwordInput.getText().toString();
+
+
+//                        String phoneNumber = "1234567890"; // The phone number you want to check
+
+                        CollectionReference listsRef = db.collection("lists");
+
+                        listsRef.whereArrayContains("collab", phoneInp)
+                                .get()
+                                .addOnSuccessListener(queryDocumentSnapshots -> {
+                                    if (queryDocumentSnapshots.isEmpty()) {
+                                        // Phone number does not exist in any collab array
+                                        Log.d("PhoneNumberCheck", "Phone number does not exist in any collab array.");
+                                    } else {
+                                        // Phone number exists in at least one collab array
+                                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                            // Get the list data
+                                            String listName = documentSnapshot.getString("list name");
+                                            String listId = documentSnapshot.getId();
+                                            List<String> items = (List<String>) documentSnapshot.get("items");
+
+                                            // Save the list to SharedPreferences
+                                            saveListToSharedPreferences(listId,listName, items);
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Error checking phone number in collab arrays
+                                    Log.e("PhoneNumberCheck", "Error checking phone number in collab arrays: " + e.getMessage());
+                                });
+
+
 
                         if (phoneInp.equals("")) {
                             Toast.makeText(SignInActivity.this, "Missing info", Toast.LENGTH_SHORT).show();
@@ -131,4 +169,17 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
+    private void saveListToSharedPreferences(String listId, String listName, List<String> items) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("list_"+ listId, listName);
+
+        // Save the items as a Set<String>
+        Set<String> itemsSet = new HashSet<>(items);
+        editor.putStringSet(listName , itemsSet);
+
+        editor.apply();
+    }
+
 }
