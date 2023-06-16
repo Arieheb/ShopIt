@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         listView = findViewById(R.id.listView);
         items = new ArrayList<>();
         loadKeyNames(); // Call the method to load key names into the ListView
-        Log.d(TAG, "items is " + items);
+        Log.d(TAG, "items is array of all list names " + items);
         adapter = new CustomListAdapter(getApplicationContext(),items);
         listView.setAdapter(adapter);
 
@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
                 // Step 3: Create and display an AlertDialog
 
                 Toast.makeText(MainActivity.this, "Touched an item", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "items are: " + items.get(position));
+                Log.d(TAG, "items.getPosition is name of list: " + items.get(position));
 
-                Log.d(TAG, "retrive items is: " + retrieveItemsFromSharedPreferences(items.get(position)));
-
+                Log.d(TAG, "retrive items is list of items: " + retrieveItemsFromSharedPreferences(items.get(position)));
+                ArrayList<String> itemList = (ArrayList<String>) retrieveItemsFromSharedPreferences(items.get(position));
                 DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
                 multiChoiceDialog.setCancelable(false);
                 multiChoiceDialog.show(getSupportFragmentManager(),"multiChoice Dialog");
