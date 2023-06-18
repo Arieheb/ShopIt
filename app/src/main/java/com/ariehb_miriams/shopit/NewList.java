@@ -9,7 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,6 +45,9 @@ public class NewList extends AppCompatActivity {
     static ListViewAdapter adapter;
     private static SharedPreferences sp;
 
+    private static final int RESULT_PICK_CONTACT = 1;
+    private Button select;
+
     EditText input;
     EditText NameOfList;
     ImageView enter;
@@ -67,28 +73,23 @@ public class NewList extends AppCompatActivity {
         saveBtn = findViewById(R.id.saveListBtn);
         NameOfList = findViewById(R.id.listName);
         items = new ArrayList<>();
-
+        select = findViewById(R.id.collabAdd);
         adapter = new ListViewAdapter(getApplicationContext(), items);
         listView.setAdapter(adapter);
 
 
         //// Contact Access ////
 
-        buttonLoadContacts = findViewById(R.id.collabAdd);
-        contactList = new ArrayList<>();
 
-        buttonLoadContacts.setOnClickListener(new View.OnClickListener() {
+        select.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-//                requestContactPermissionAndLoadContacts();
+            public void onClick(View view) {
+                Intent in = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(in, RESULT_PICK_CONTACT);
+
+
             }
         });
-
-
-
-
-
-
 
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,5 +189,38 @@ public class NewList extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         editor.putStringSet(currentList, new HashSet<>(items));
         editor.apply();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {  /////
+                case RESULT_PICK_CONTACT:
+                    contactPicked(data);
+
+            }
+        }
+        else {
+            Toast.makeText(this, "failed to pick contact", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void contactPicked(Intent data) {
+        Cursor cursor = null;
+
+        try{
+            String phoneNo = null;
+            Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+            cursor = getContentResolver().query(uri,null,null,null,null);
+            cursor.moveToFirst();
+            int phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            phoneNo = cursor.getString(phoneIndex);
+            Log.d("mylog", "contact number " + phoneNo);
+//            phone.setText(phoneNo);
+       }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
