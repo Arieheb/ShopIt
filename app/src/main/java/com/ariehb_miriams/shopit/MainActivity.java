@@ -1,8 +1,6 @@
 package com.ariehb_miriams.shopit;
 
 
-import static android.content.ContentValues.TAG;
-import static java.lang.System.exit;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -15,7 +13,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,25 +21,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity implements MultipuleChoiceDialogFragment.onMultiChoiceListener {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference userCollection = db.collection("users");
-    CollectionReference listCollection = db.collection("lists");
-
     SharedPreferences sp;
     BroadcastReceiver broadcastReceiver = null;
     String userID;
@@ -165,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     }
     private void exitAlertDialog()    {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-//        dialog.setIcon(R.drawable.icon_exit);
         dialog.setTitle("Exit App");
         dialog.setMessage("Are you sure ?");
         dialog.setCancelable(false);
@@ -210,16 +196,10 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     }
     @Override
     public void onPositiveButtonClicked(String[] list, ArrayList<String> selectedItemList) {
-//        StringBuilder stringBuilder = new StringBuilder();
-////        stringBuilder.append("Selected Choices = ");
-//        for (String str:selectedItemList){
-//            stringBuilder.append(str + " ");
-//        }
-//        mylist.setText(stringBuilder);
+
     }
     @Override
     public void onNegativeButtonClicked() {
-//        mylist.setText("Dialog canceled");
 
     }
 

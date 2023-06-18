@@ -1,10 +1,8 @@
 package com.ariehb_miriams.shopit;
 
-import static android.content.ContentValues.TAG;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

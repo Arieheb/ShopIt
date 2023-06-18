@@ -21,28 +21,6 @@
         android:layout_marginLeft="28sp"
         android:textColor="#000"
         android:textSize="20sp" />
-<!--    -->
-<!--    <CheckBox-->
-<!--        android:id="@+id/checkBox"-->
-<!--        android:layout_width="22sp"-->
-<!--        android:layout_height="22sp"-->
-<!--        android:layout_centerVertical="true"-->
-<!--        android:layout_marginRight="18dp"-->
-<!--        android:layout_toLeftOf="@id/remove"-->
-<!--         />-->
-
-
-
-    <ImageView
-        android:layout_width="25sp"
-        android:layout_height="25sp"
-        android:id="@+id/imageViewCheck"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/remove"
-        android:layout_marginRight="18sp"
-        android:src="@drawable/ic_check"
-
-        />
 
     <ImageView
         android:layout_width="25sp"
