@@ -1,8 +1,6 @@
 package com.ariehb_miriams.shopit;
 
 
-import static android.content.ContentValues.TAG;
-import static java.lang.System.exit;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -15,7 +13,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,25 +21,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class MainActivity extends AppCompatActivity implements MultipuleChoiceDialogFragment.onMultiChoiceListener {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference userCollection = db.collection("users");
-    CollectionReference listCollection = db.collection("lists");
-
     SharedPreferences sp;
     BroadcastReceiver broadcastReceiver = null;
     String userID;
@@ -51,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
     ListView listView;
     CustomListAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         listView.setAdapter(adapter);
 
 
-
         //// alert dialog for list ////
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,13 +60,8 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Step 3: Create and display an AlertDialog
 
-//                Toast.makeText(MainActivity.this, "Touched an item", Toast.LENGTH_SHORT).show();
-//                Log.d(TAG, "items.getPosition is name of list: " + items.get(position));
-
-//                Log.d(TAG, "retrive items is list of items: " + retrieveItemsFromSharedPreferences(items.get(position)));
                 ArrayList<String> itemList = (ArrayList<String>) retrieveItemsFromSharedPreferences(items.get(position));
                 DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment(items.get(position), itemList);
-//                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
                 multiChoiceDialog.setCancelable(false);
                 multiChoiceDialog.show(getSupportFragmentManager(),"multiChoice Dialog");
             }
@@ -172,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     }
     private void exitAlertDialog()    {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-//        dialog.setIcon(R.drawable.icon_exit);
         dialog.setTitle("Exit App");
         dialog.setMessage("Are you sure ?");
         dialog.setCancelable(false);
@@ -217,16 +196,10 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     }
     @Override
     public void onPositiveButtonClicked(String[] list, ArrayList<String> selectedItemList) {
-//        StringBuilder stringBuilder = new StringBuilder();
-////        stringBuilder.append("Selected Choices = ");
-//        for (String str:selectedItemList){
-//            stringBuilder.append(str + " ");
-//        }
-//        mylist.setText(stringBuilder);
+
     }
     @Override
     public void onNegativeButtonClicked() {
-//        mylist.setText("Dialog canceled");
 
     }
 
@@ -242,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             if (key != null && key.startsWith("list_")) {
                 // Perform the necessary operations
                 String listName = sp.getString(key, "");
-//                Log.d(TAG, "loadKeyNames: " + key);
                 items.add(listName);
             }
         }
@@ -251,15 +223,9 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     }
 
     private List<String> retrieveItemsFromSharedPreferences(String listName) {
-        // Retrieve the SharedPreferences instance
         SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        // Retrieve the StringSet based on the clicked row position
         Set<String> itemSet = sp.getStringSet(listName, new HashSet<>());
-//        Log.d(TAG, "item set is: " + itemSet);
-        // Convert the Set to a List for easier manipulation
         List<String> itemList = new ArrayList<>(itemSet);
-//        Log.d(TAG, "itemList is " + itemList);
-
         return itemList;
     }
 }

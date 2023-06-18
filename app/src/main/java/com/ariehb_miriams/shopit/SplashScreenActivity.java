@@ -24,7 +24,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 SharedPreferences sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
                 if (sp.getBoolean("signedOut", true)) {
                     if (loopCounter < LOOP_COUNT) {
                         // Continue looping
