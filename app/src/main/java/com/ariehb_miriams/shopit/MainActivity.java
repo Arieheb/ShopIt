@@ -74,12 +74,13 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Step 3: Create and display an AlertDialog
 
-                Toast.makeText(MainActivity.this, "Touched an item", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "items.getPosition is name of list: " + items.get(position));
+//                Toast.makeText(MainActivity.this, "Touched an item", Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, "items.getPosition is name of list: " + items.get(position));
 
                 Log.d(TAG, "retrive items is list of items: " + retrieveItemsFromSharedPreferences(items.get(position)));
                 ArrayList<String> itemList = (ArrayList<String>) retrieveItemsFromSharedPreferences(items.get(position));
-                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
+                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment(items.get(position), itemList);
+//                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
                 multiChoiceDialog.setCancelable(false);
                 multiChoiceDialog.show(getSupportFragmentManager(),"multiChoice Dialog");
             }
@@ -254,7 +255,8 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             String key = entry.getKey();
-            if (key.startsWith("list_")) {
+            if (key != null && key.startsWith("list_")) {
+                // Perform the necessary operations
                 String listName = sp.getString(key, "");
 //                Log.d(TAG, "loadKeyNames: " + key);
                 items.add(listName);

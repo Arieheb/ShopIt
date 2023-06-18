@@ -1,7 +1,10 @@
 package com.ariehb_miriams.shopit;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +37,14 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         }
 
         TextView number = convertView.findViewById(R.id.number);
-        number.setText(position + 1 + ".");
+//        number.setText(position + 1 + ".");
 
 
         TextView textListName = convertView.findViewById(R.id.textViewListName);
         textListName.setText(list.get(position));
 
+        Log.d(TAG, "getView: list.get(position) is: " + list.get(position));
+        Log.d(TAG, "getView: list is: " + list);
 
         ImageView checkIcon = convertView.findViewById(R.id.imageViewCheck);
         ImageView removeIcn = convertView.findViewById(R.id.remove);
