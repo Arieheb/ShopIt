@@ -58,10 +58,11 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+
         listView = findViewById(R.id.listView);
         items = new ArrayList<>();
         loadKeyNames(); // Call the method to load key names into the ListView
-        Log.d(TAG, "items is " + items);
+
         adapter = new CustomListAdapter(getApplicationContext(),items);
         listView.setAdapter(adapter);
 
@@ -74,19 +75,17 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Step 3: Create and display an AlertDialog
 
-                Toast.makeText(MainActivity.this, "Touched an item", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "items are: " + items.get(position));
+//                Toast.makeText(MainActivity.this, "Touched an item", Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, "items.getPosition is name of list: " + items.get(position));
 
-                Log.d(TAG, "retrive items is: " + retrieveItemsFromSharedPreferences(items.get(position)));
-
-                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
+//                Log.d(TAG, "retrive items is list of items: " + retrieveItemsFromSharedPreferences(items.get(position)));
+                ArrayList<String> itemList = (ArrayList<String>) retrieveItemsFromSharedPreferences(items.get(position));
+                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment(items.get(position), itemList);
+//                DialogFragment multiChoiceDialog = new MultipuleChoiceDialogFragment();
                 multiChoiceDialog.setCancelable(false);
                 multiChoiceDialog.show(getSupportFragmentManager(),"multiChoice Dialog");
             }
         });
-
-
-
 
 
         userID = getIntent().getStringExtra("userId");
@@ -114,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         broadcastReceiver = new internetReceiver();
         internetStatus();
     }
-
-
 
 
     //// 3 dot menu section ////
@@ -156,8 +153,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     }
 
 
-    private void aboutAlertDialog()
-    {
+    private void aboutAlertDialog()    {
         String strDeviceOS = "Android OS " + Build.VERSION.RELEASE + " API " + Build.VERSION.SDK_INT;
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -174,8 +170,7 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         });
         dialog.show();
     }
-    private void exitAlertDialog()
-    {
+    private void exitAlertDialog()    {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 //        dialog.setIcon(R.drawable.icon_exit);
         dialog.setTitle("Exit App");
@@ -201,8 +196,6 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
         });
         dialog.show();
     }
-
-
     //// defining exit if back button pressed on main screen ////
     @Override
     public void onBackPressed() {
@@ -237,24 +230,17 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
 
     }
 
-
     public void internetStatus(){
         registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
-
-    /* @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(broadcastReceiver);
-    }*/
-
 
     private void loadKeyNames() {
         Map<String, ?> allEntries = sp.getAll();
 
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
             String key = entry.getKey();
-            if (key.startsWith("list_")) {
+            if (key != null && key.startsWith("list_")) {
+                // Perform the necessary operations
                 String listName = sp.getString(key, "");
 //                Log.d(TAG, "loadKeyNames: " + key);
                 items.add(listName);

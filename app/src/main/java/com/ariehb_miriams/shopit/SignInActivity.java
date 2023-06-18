@@ -63,7 +63,6 @@ public class SignInActivity extends AppCompatActivity {
                         String passInput = passwordInput.getText().toString();
 
 
-//                        String phoneNumber = "1234567890"; // The phone number you want to check
 
                         CollectionReference listsRef = db.collection("lists");
 

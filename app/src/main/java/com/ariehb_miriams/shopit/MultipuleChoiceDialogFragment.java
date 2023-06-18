@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,12 @@ import androidx.fragment.app.DialogFragment;
 
 public class MultipuleChoiceDialogFragment extends DialogFragment {
 
+    private String listName;
+    private ArrayList<String> itemList;
+    public MultipuleChoiceDialogFragment (String listName, ArrayList<String> itemList) {
+        this.listName = listName;
+        this.itemList = itemList;
+    }
     public interface onMultiChoiceListener{
         void onPositiveButtonClicked(String[] list, ArrayList<String> selectedItemList);
         void onNegativeButtonClicked();
@@ -36,17 +43,17 @@ public class MultipuleChoiceDialogFragment extends DialogFragment {
 
         ArrayList<String> selectedItemList= new ArrayList<>();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        String[] listArray = itemList.toArray(new String[0]);
+//        String[] list = getActivity().getResources().getStringArray(R.array.shopping_list);
 
-        String[] list = getActivity().getResources().getStringArray(R.array.shopping_list);
-
-        builder.setTitle("My List")
-                .setMultiChoiceItems(list, null, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setTitle(listName)
+                .setMultiChoiceItems(listArray, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                         if (b) {
-                            selectedItemList.add(list[i]);
+                            selectedItemList.add(listArray[i]);
                         } else{
-                            selectedItemList.remove(list[i]);
+                            selectedItemList.remove(listArray[i]);
                         }
 
                     }
@@ -54,7 +61,7 @@ public class MultipuleChoiceDialogFragment extends DialogFragment {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        mListener.onPositiveButtonClicked(list,selectedItemList);
+                        mListener.onPositiveButtonClicked(listArray,selectedItemList);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
