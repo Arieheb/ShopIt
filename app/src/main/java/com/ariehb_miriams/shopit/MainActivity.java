@@ -57,14 +57,12 @@ public class MainActivity extends AppCompatActivity implements MultipuleChoiceDi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("mylog","111");
         sp = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
 
         listView = findViewById(R.id.listView);
         items = new ArrayList<>();
         loadKeyNames(); // Call the method to load key names into the ListView
 
-//        Log.d(TAG, "items is array of all list names " + items);
         adapter = new CustomListAdapter(getApplicationContext(),items);
         listView.setAdapter(adapter);
 
